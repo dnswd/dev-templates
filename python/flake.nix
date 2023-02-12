@@ -17,20 +17,27 @@
     let
       overlays = [
         (self: super: {
-          machNix = mach-nix.defaultPackage.${system};
-          python = super.python311;
+          machNix = mach-nix.lib.${system};
         })
       ];
-
       pkgs = import nixpkgs { inherit overlays system; };
-    in
-    {
+
+      myPy = pkgs.machNix.mkPython {
+        python = "python310";
+        # requirements = builtins.readFile ./requirements.txt;
+        requirements = ''
+        black
+        python-dotenv
+        pip
+        virtualenv
+        '';
+      };
+    in {
       devShells.default = pkgs.mkShell {
-        buildInputs = with pkgs; [ python machNix virtualenv ] ++
-          (with pkgs.python311Packages; [ pip ]);
+        nativeBuildInputs = [ myPy ];
 
         shellHook = ''
-          ${pkgs.python}/bin/python --version
+          ${myPy.python}/bin/python --version
         '';
       };
     });
