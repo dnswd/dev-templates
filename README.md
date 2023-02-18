@@ -1,34 +1,36 @@
-# Nix flake templates for easy dev environments
+# Personal nix flake templates for easy dev environments
+
+Forked from [`the-nix-way`](https://github.com/the-nix-way/dev-templates). GO check their [blog](https://determinate.systems/posts/nix-direnv)!
 
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
 To initialize (where `${ENV}` is listed in the table below):
 
 ```shell
-nix flake init --template github:the-nix-way/dev-templates#${ENV}
+nix flake init --template github:dnswd/dev-templates#${ENV}
 ```
 
 Here's an example (for the [`rust`](./rust) template):
 
 ```shell
 # Initialize in the current project
-nix flake init --template github:the-nix-way/dev-templates#rust
+nix flake init --template github:dnswd/dev-templates#rust
 
 # Create a new project
-nix flake new --template github:the-nix-way/dev-templates#rust ${NEW_PROJECT_DIRECTORY}
+nix flake new --template github:dnswd/dev-templates#rust ${NEW_PROJECT_DIRECTORY}
 ```
 
 Or you can add this line directly into `.envrc`:
 
 ```shell
-use flake "github:the-nix-way/dev-templates?dir=${ENV}"
+use flake "github:dnswd/dev-templates?dir=${ENV}"
 ```
 
 By directly declaring flakes in the `.envrc` you can compose multiple flakes:
 
 ```shell
-use flake "github:the-nix-way/dev-templates?dir=python"
-use flake "github:the-nix-way/dev-templates?dir=cpp"
+use flake "github:dnswd/dev-templates?dir=python"
+use flake "github:dnswd/dev-templates?dir=cpp"
 ```
 
 Composing flakes may not always be the best idea, as Nix honors the flake listed last in case of a clash, for example in the case of two buildInputs named cargo that refer to different versions of Cargo.
@@ -336,4 +338,3 @@ All of the templates have only the root [flake](./flake.nix) as a flake input. T
 [vulnix]: https://github.com/flyingcircusio/vulnix
 [yarn]: https://yarnpkg.com
 [zig]: https://ziglang.org
-
