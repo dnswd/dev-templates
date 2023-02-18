@@ -18,6 +18,21 @@ nix flake init --template github:the-nix-way/dev-templates#rust
 nix flake new --template github:the-nix-way/dev-templates#rust ${NEW_PROJECT_DIRECTORY}
 ```
 
+Or you can add this line directly into `.envrc`:
+
+```shell
+use flake "github:the-nix-way/dev-templates?dir=${ENV}"
+```
+
+By directly declaring flakes in the `.envrc` you can compose multiple flakes:
+
+```shell
+use flake "github:the-nix-way/dev-templates?dir=python"
+use flake "github:the-nix-way/dev-templates?dir=cpp"
+```
+
+Composing flakes may not always be the best idea, as Nix honors the flake listed last in case of a clash, for example in the case of two buildInputs named cargo that refer to different versions of Cargo.
+
 ## How to use the templates
 
 Once your preferred template has been initialized, you can use the provided shell in two ways:
