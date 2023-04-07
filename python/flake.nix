@@ -20,9 +20,11 @@
           machNix = mach-nix.lib.${system};
         })
       ];
+
       pkgs = import nixpkgs { inherit overlays system; };
 
-      myPy = pkgs.machNix.mkPython {
+      # You can choose between using mach-nix or poetry2nix
+      machNixEnv = (pkgs.machNix.mkPython {
         python = "python310";
         # requirements = builtins.readFile ./requirements.txt;
         requirements = ''
@@ -31,13 +33,26 @@
         pip
         virtualenv
         '';
-      };
+      });
+
+      poetryEnv = (pkgs.poetry2nix.mkPoetryEnv {
+        python = pkgs.python310;
+        projectDir = ./.;
+        overrides = [
+          pkgs.poetry2nix.defaultPoetryOverrides
+        ];
+      });
     in {
       devShells.default = pkgs.mkShell {
-        nativeBuildInputs = [ myPy ];
+        nativeBuildInputs = [
+          # Pick one env 
+          myPy                  # to use mach-nix
+          poetryEnv pkgs.poetry # to use poetry2nix
+        ];
 
         shellHook = ''
           ${myPy.python}/bin/python --version
+          ${pythonEnv}/bin/python --version
         '';
       };
     });
