@@ -65,6 +65,11 @@
           description = "Kotlin development environment";
         };
 
+        latex = {
+          path = ./latex;
+          description = "Latex development environment";
+        };
+
         nickel = {
           path = ./nickel;
           description = "Nickel development environment";

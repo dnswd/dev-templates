@@ -45,14 +45,13 @@
     in {
       devShells.default = pkgs.mkShell {
         nativeBuildInputs = [
-          # Pick one env 
-          myPy                  # to use mach-nix
+          # Pick one env
+          #vmyPy                  # to use mach-nix
           poetryEnv pkgs.poetry # to use poetry2nix
         ];
 
         shellHook = ''
-          ${myPy.python}/bin/python --version
-          ${pythonEnv}/bin/python --version
+          ${poetryEnv}/bin/python --version
         '';
       };
     });
